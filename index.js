@@ -33,6 +33,9 @@ async function run() {
 
     const newArriveCollection = client.db("bazar").collection("newArrive");
     const userCollection = client.db("bazar").collection("users");
+    const allPhoneCollection = client.db("bazar").collection("allPhones");
+    const allLaptopCollection = client.db("bazar").collection("allLaptops");
+    const allBluetoothCollection = client.db("bazar").collection("allBluetooths");
 
      // jwt verify middleware
      const verifyToken = (req, res, next) => {
@@ -130,7 +133,31 @@ async function run() {
     app.get("/new-arrive", async(req, res) =>{
         const result = await newArriveCollection.find().toArray();
         res.send(result);
-    })
+    });
+
+
+  // add phone data to database
+  app.post("/addPhones", async (req, res) => {
+    const addPhones = req.body;
+    const result = await allPhoneCollection.insertOne(addPhones);
+    res.send(result);
+  }); 
+
+  // add laptop data to database
+  app.post("/addLaptops", async (req, res) => {
+    const addLaptops = req.body;
+    const result = await allLaptopCollection.insertOne(addLaptops);
+    res.send(result);
+  });
+
+  // add bluetooth data to database
+  app.post("/addBluetooth", async (req, res) => {
+    const addBluetooth = req.body;
+    const result = await allBluetoothCollection.insertOne(addBluetooth);
+    res.send(result);
+  }); 
+
+
 
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
