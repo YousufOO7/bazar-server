@@ -50,9 +50,24 @@ async function run() {
         });
       };
 
+     // verifyAdmin token
+     const verifyAdmin = async (req, res, next) => {
+        const email = req?.decoded?.email;
+        // console.log('this is a email', email);
+        const query = { email: email };
+        // console.log('this is a query', query);
+        const user = await userCollection.findOne(query);
+        const isAdmin = user?.role === "admin";
+        // console.log(isAdmin);
+        if (!isAdmin) {
+          return res.status(403).send({ message: "forbidden access" });
+        }
+        next();
+      };  
+
 
     // admin api
-    app.get("/users/admin/:email", verifyToken, async(req, res) => {
+    app.get("/users/admin/:email", verifyToken, verifyAdmin, async(req, res) => {
         const email = req.params.email;
         if(email !== req.decoded.email){
             return res.status(403).send({message: "Unauthorized access"})
