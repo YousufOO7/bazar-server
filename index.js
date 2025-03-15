@@ -158,6 +158,25 @@ async function run() {
   }); 
 
 
+  // show phone data into a admin panel
+  app.get("/phones", async(req, res) => {
+    const result = await allPhoneCollection.find().toArray();
+    res.send(result);
+  });
+
+  // show laptop data into a admin panel
+  app.get("/laptops", async(req, res) => {
+    const result = await allLaptopCollection.find().toArray();
+    res.send(result);
+  });
+
+  // show bluetooth data into a admin panel
+  app.get("/bluetooths", async(req, res) => {
+    const result = await allBluetoothCollection.find().toArray();
+    res.send(result);
+  })
+
+
 
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
