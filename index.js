@@ -36,6 +36,7 @@ async function run() {
     const allPhoneCollection = client.db("bazar").collection("allPhones");
     const allLaptopCollection = client.db("bazar").collection("allLaptops");
     const allBluetoothCollection = client.db("bazar").collection("allBluetooths");
+    const cartCollection = client.db("bazar").collection("carts");
 
      // jwt verify middleware
      const verifyToken = (req, res, next) => {
@@ -70,7 +71,7 @@ async function run() {
 
 
     // admin api
-    app.get("/users/admin/:email", verifyToken, verifyAdmin, async(req, res) => {
+    app.get("/users/admin/:email", verifyToken, async(req, res) => {
         const email = req.params.email;
         if(email !== req.decoded.email){
             return res.status(403).send({message: "Unauthorized access"})
@@ -199,7 +200,23 @@ async function run() {
     const query = {_id: new ObjectId(id)};
     const result = await allBluetoothCollection.findOne(query);
     res.send(result);
-  })
+  });
+
+  // post all added cart by user
+  app.post("/carts", async (req, res) => {
+    const cartsItem = req.body;
+    const result = await cartCollection.insertOne(cartsItem);
+    res.send(result);
+  });
+
+
+  // get all added cart data
+  app.get("/carts", async (req, res) => {
+    const email = req.query.email;
+    const query = { email: email };
+    const result = await cartCollection.find(query).toArray();
+    res.send(result);
+  });
 
 
 
