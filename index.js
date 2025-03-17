@@ -174,6 +174,31 @@ async function run() {
   app.get("/bluetooths", async(req, res) => {
     const result = await allBluetoothCollection.find().toArray();
     res.send(result);
+  });
+
+
+  // phone details page by dynamic id
+  app.get("/phoneDetails/:id", async(req, res) => {
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result = await allPhoneCollection.findOne(query);
+    res.send(result);
+  });
+
+  // laptop details page by dynamic id
+  app.get("/laptopDetails/:id", async(req, res) => {
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result = await allLaptopCollection.findOne(query);
+    res.send(result);
+  });
+
+  // bluetooth details page by dynamic id
+  app.get("/bluetoothDetails/:id", async(req, res) => {
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result = await allBluetoothCollection.findOne(query);
+    res.send(result);
   })
 
 
